@@ -2,7 +2,7 @@
 FROM nginx:latest
 
 # Copiez les fichiers de votre application frontend dans le conteneur
-COPY crud-tuto-front /usr/share/nginx/html
+COPY . /usr/share/nginx/html
 
 # Exposez le port 80 (par défaut) sur lequel NGINX écoute
 EXPOSE 80
