@@ -1,11 +1,20 @@
-# Utilisez une image de NGINX comme image de base
-FROM nginx:latest
+# Utilisez une image Node.js comme image de base
+FROM node:14
 
-# Copiez les fichiers de votre application frontend dans le conteneur
-COPY . /usr/share/nginx/html
+# Créez un répertoire de travail dans le conteneur
+WORKDIR /app
 
-# Exposez le port 80 (par défaut) sur lequel NGINX écoute
-EXPOSE 80
+# Copiez le fichier package.json et le fichier package-lock.json dans le conteneur
+COPY package*.json ./
 
-# Commande pour démarrer NGINX
-CMD ["nginx", "-g", "daemon off;"]
+# Installez les dépendances
+RUN npm install
+
+# Copiez tout le reste de l'application dans le conteneur
+COPY . .
+
+# Exposez le port 4200 pour le serveur de développement Angular
+EXPOSE 4200
+
+# Commande pour démarrer l'application Angular
+CMD ["ng", "serve"]
