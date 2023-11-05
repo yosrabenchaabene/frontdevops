@@ -5,16 +5,18 @@ FROM node:14
 WORKDIR /app
 
 # Copiez le fichier package.json et le fichier package-lock.json dans le conteneur
-COPY package*.json ./
+COPY package.json ./
 
 # Installez les dépendances
 RUN npm install
 
 # Copiez tout le reste de l'application dans le conteneur
 COPY . .
+RUN npm run build
 
-# Exposez le port 4200 pour le serveur de développement Angular
+# Étape 2 : Utilisez une image Nginx pour servir l'application Angular
+FROM nginx:alpine as prod-step
+COPY --from=build-step app/dist/crud-tuto-Front /usr/share/nginx/html
 EXPOSE 4200
 
-# Commande pour démarrer l'application Angular
-CMD ["ng", "serve"]
+
